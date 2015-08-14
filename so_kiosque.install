@@ -1,0 +1,110 @@
+<?php
+
+function so_kiosque_schema() {
+
+    $schema = array();
+
+    $schema['kiosque_sequences'] = array(
+
+        'description' => "Stores Kiosque sequences infos",
+
+        'fields' => array(
+            'id' => array(
+				'type' => 'serial',
+				'not null' => true,
+                'unsigned' => true,
+				'description' => "The sequence's id. Primary key.",
+			),
+            'name' => array(
+				'type' => 'varchar',
+				'length' => '255',
+				'not null' => true,
+				'description' => "The human readable sequence's name.",
+			),
+            'params' => array(
+				'type' => 'text',
+				'not null' => true,
+				'description' => "The sequence's settings.",
+			),
+        ),
+
+        'primary key' => array('id'),
+    );
+
+    $schema['kiosque_actors'] = array(
+
+        'description' => "Stores Kiosque actors infos",
+
+        'fields' => array(
+
+            'id' => array(
+				'type' => 'serial',
+				'not null' => true,
+                'unsigned' => true,
+				'description' => "The actors's id. Primary key.",
+			),
+            'name' => array(
+				'type' => 'varchar',
+				'length' => '255',
+				'not null' => true,
+				'description' => "The human readable actors's name.",
+			),
+            'type' => array(
+				'type' => 'varchar',
+				'length' => '255',
+				'not null' => true,
+				'description' => "The actors's type.",
+			),
+            'params' => array(
+				'type' => 'text',
+				'not null' => true,
+				'description' => "The actors's settings.",
+			),
+        ),
+
+        'primary key' => array('id'),
+    );
+
+    $schema['kiosque_sequences_actors'] = array(
+
+        'description' => "Stores Kiosque links between actors and sequences",
+
+        'fields' => array(
+            'id_actor' => array(
+                'type' => 'int',
+                'not null' => true,
+                'unsigned' => true,
+                'description' => "The actor's id.",
+            ),
+            'id_sequence' => array(
+                'type' => 'int',
+                'not null' => true,
+                'unsigned' => true,
+                'description' => "The sequence's id.",
+            ),
+            'active' => array(
+                'description' => "A boolean indicating whether the actor is active or not.",
+                'type' => 'int',
+                'not null' => true,
+                'unsigned' => true,
+                'default' => 0,
+            ),
+            'weight' => array(
+                'description' => "The actor's weight.",
+                'type' => 'int',
+                'not null' => true,
+                'unsigned' => false,
+                'default' => 0,
+            ),
+            'params' => array(
+				'type' => 'text',
+				'not null' => true,
+				'description' => "The actor's settings in the sequence context.",
+			),
+        ),
+
+        'primary key' => array('id_actor', 'id_sequence'),
+    );
+
+    return $schema;
+}

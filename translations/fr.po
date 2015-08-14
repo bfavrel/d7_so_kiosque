@@ -1,0 +1,290 @@
+# $Id$
+#
+# French translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  so_kiosque.admin.inc: n/a
+#  so_kiosque.module: n/a
+#  so_kiosque.info: n/a
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2014-06-11 14:45+0200\n"
+"PO-Revision-Date: 2014-06-11 15:08+0100\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: French <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: so_kiosque.admin.inc:11 so_kiosque.module:68
+msgid "Sequences"
+msgstr "Séquences"
+
+#: so_kiosque.admin.inc:30
+msgid "New sequence name"
+msgstr "Nom de la nouvelle séquence"
+
+#: so_kiosque.admin.inc:36;254;462
+msgid "Add"
+msgstr "Ajouter"
+
+#: so_kiosque.admin.inc:50;226;434
+msgid "Actors"
+msgstr "Acteurs"
+
+#: so_kiosque.admin.inc:51;482
+msgid "Parameters"
+msgstr "Paramètres"
+
+#: so_kiosque.admin.inc:52;181;300;483;619
+msgid "Delete"
+msgstr "Supprimer"
+
+#: so_kiosque.admin.inc:69
+msgid "No sequence set yet"
+msgstr "Il n'existe aucune séquence"
+
+#: so_kiosque.admin.inc:85;140;341;516
+msgid "Name"
+msgstr "Nom"
+
+#: so_kiosque.admin.inc:86;343;518
+msgid "Operations"
+msgstr "Actions"
+
+#: so_kiosque.admin.inc:100
+msgid "Some actors have to be defined first"
+msgstr "Des acteurs doivent d'abord être définis"
+
+#: so_kiosque.admin.inc:125
+msgid ""
+"Sequence has been created.<br />The next step consists in adding actors to "
+"the sequence."
+msgstr ""
+"La séquence a été créée.<br />L'étape suivante consiste a ajouter des "
+"acteurs dans la séquence."
+
+#: so_kiosque.admin.inc:132;205
+msgid "Sequence '@sequence'"
+msgstr "Séquence '@sequence'"
+
+#: so_kiosque.admin.inc:136 so_kiosque.module:83
+msgid "Edit sequence"
+msgstr "Editer la séquence"
+
+#: so_kiosque.admin.inc:147;239;588;682
+msgid "Save"
+msgstr "Enregistrer"
+
+#: so_kiosque.admin.inc:151;260;592
+msgid "Back"
+msgstr "Retour"
+
+#: so_kiosque.admin.inc:168
+msgid "Sequence has been updated"
+msgstr "La séquence a été mise à jour."
+
+#: so_kiosque.admin.inc:178
+msgid "Are you sure you want to delete the sequence '@sequence' ?"
+msgstr "Etes-vous sûr de vouloir supprimer la séquence '@sequence' ?"
+
+#: so_kiosque.admin.inc:194
+msgid "Sequence '@sequence' has been deleted"
+msgstr "La séquence '@sequence' a été supprimée."
+
+#: so_kiosque.admin.inc:248
+msgid "Available actors"
+msgstr "Acteurs disponibles"
+
+#: so_kiosque.admin.inc:301
+msgid "Development display"
+msgstr "Affichage de développement"
+
+#: so_kiosque.admin.inc:317
+msgid "No actor in this sequence yet"
+msgstr "Aucun acteur dans cette séquence"
+
+#: so_kiosque.admin.inc:340
+msgid "Active"
+msgstr "Actif"
+
+#: so_kiosque.admin.inc:342
+msgid "Weight"
+msgstr "Poids"
+
+#: so_kiosque.admin.inc:400
+msgid "Actor has been added to the sequence."
+msgstr "L'acteur a été ajouté à la séquence"
+
+#: so_kiosque.admin.inc:410
+msgid "Actor has been removed"
+msgstr "L'acteur a été supprimé de la séquence."
+
+#: so_kiosque.admin.inc:451
+msgid "New actor name"
+msgstr "Nom du nouvel acteur"
+
+#: so_kiosque.admin.inc:456
+msgid "Actor type"
+msgstr "Type d'acteur"
+
+#: so_kiosque.admin.inc:499
+msgid "No actor set yet"
+msgstr "Aucun acteur"
+
+#: so_kiosque.admin.inc:517
+msgid "Type"
+msgstr "Type"
+
+#: so_kiosque.admin.inc:556
+msgid "Actor has been created.<br />It must be configured now."
+msgstr "L'acteur a été créé.<br />Il doit maintenant être configuré."
+
+#: so_kiosque.admin.inc:563
+msgid "Actor '@actor'"
+msgstr "Acteur '@actor'"
+
+#: so_kiosque.admin.inc:607
+msgid "Actor's params have been saved"
+msgstr "Les paramètres de l'acteur ont été sauvegardés."
+
+#: so_kiosque.admin.inc:616
+msgid "Are you sure you want to delete the actor '@actor' ?"
+msgstr "Etes-vous sûr de vouloir supprimer l'acteur '@actor' ?"
+
+#: so_kiosque.admin.inc:632
+msgid "Actor '@actor' has been deleted"
+msgstr "L'acteur '@actor' a été supprimé."
+
+#: so_kiosque.admin.inc:659
+msgid "Theme to use for displaying the kiosque"
+msgstr "Thème utilisé pour afficher le Kiosque"
+
+#: so_kiosque.admin.inc:666
+msgid "Minimum display time for a page"
+msgstr "Temps d'affichage minimum pour une page"
+
+#: so_kiosque.admin.inc:667
+msgid "in milliseconds"
+msgstr "en millisecondes"
+
+#: so_kiosque.admin.inc:675
+msgid "Activate development mode"
+msgstr "Activer le mode de développement"
+
+#: so_kiosque.admin.inc:676
+msgid ""
+"Provides menu callbacks to display each actors of each sequences in the "
+"kiosque's theme, and inhibits built-in slideshow."
+msgstr ""
+"Fourni des liens permettant visualiser les acteurs de chaque séquence dans "
+"le thème du Kiosque, et désactive la mécanique interne de défilement."
+
+#: so_kiosque.admin.inc:699
+msgid "Settings have been saved."
+msgstr "Les paramètres ont été sauvegardés."
+
+#: so_kiosque.module:7
+msgid "Configure module"
+msgstr "Configurer le module"
+
+#: so_kiosque.module:8
+msgid "Edit module's settings."
+msgstr "Editer les paramètres du module."
+
+#: so_kiosque.module:11
+msgid "Administer kiosque"
+msgstr "Administrer le Kiosque"
+
+#: so_kiosque.module:12
+msgid "Create and configure slideshows."
+msgstr "Créer des acteurs et des séquences."
+
+#: so_kiosque.module:15
+msgid "Display kiosque"
+msgstr "Afficher le Kiosque"
+
+#: so_kiosque.module:16
+msgid "Launch and display slideshows."
+msgstr "Lancer et afficher le Kiosque"
+
+#: so_kiosque.module:372
+msgid "There's nothing to launch for the moment."
+msgstr "Il n'y a rien à lancer pour le moment."
+
+#: so_kiosque.module:380
+msgid "Sequence to launch"
+msgstr "Séquence à lancer"
+
+#: so_kiosque.module:386
+msgid "Launch"
+msgstr "Lancer"
+
+#: so_kiosque.module:520
+msgid "No actor has provided content. The Kiosque loops indefinitely."
+msgstr ""
+"Aucun acteur n'a fourni de contenu. Le Kiosque tourne en boucle indéfiniment."
+
+#: so_kiosque.module:28;58;173;181;190 so_kiosque.info:0
+msgid "Kiosque"
+msgstr "Kiosque"
+
+#: so_kiosque.module:39;49
+msgid "Configuration"
+msgstr "Configuration"
+
+#: so_kiosque.module:40
+msgid "General and modules settings"
+msgstr "Configuration générale et des modules"
+
+#: so_kiosque.module:59
+msgid "Create and configure Kiosque slideshows."
+msgstr "Créer et configurer des acteurs et des séquences."
+
+#: so_kiosque.module:75
+msgid "Access to kiosque launcher"
+msgstr "Accéder au lanceur du Kiosque"
+
+#: so_kiosque.module:92
+msgid "Delete sequence"
+msgstr "Supprimer la séquence"
+
+#: so_kiosque.module:103
+msgid "Edit actors"
+msgstr "Editer les acteurs"
+
+#: so_kiosque.module:112;143
+msgid "Delete actor"
+msgstr "Supprimer un acteur"
+
+#: so_kiosque.module:123
+msgid "Casting"
+msgstr "Casting"
+
+#: so_kiosque.module:124
+msgid "Create and configure Kiosque actors."
+msgstr "Créer et configurer des acteurs"
+
+#: so_kiosque.module:134
+msgid "Edit actor"
+msgstr "Editer un acteur"
+
+#: so_kiosque.module:154
+msgid "Kiosque launcher"
+msgstr "Lanceur du Kiosque"
+
+#: so_kiosque.module:164
+msgid "Kiosque development"
+msgstr "Développement du Kiosque"
+
+#: so_kiosque.info:0
+msgid "Provides tools to create and display screen slideshows."
+msgstr "Fourni des outils de création et d'affichages de slideshows."
+
+#: so_kiosque.info:0
+msgid "Saison d'Or"
+msgstr ""

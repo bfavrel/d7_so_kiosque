@@ -1,0 +1,4 @@
+name = "Kiosque"
+description = "Provides tools to create and display screen slideshows."
+package = "Saison d'Or"
+core = 7.x

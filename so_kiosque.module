@@ -1,0 +1,596 @@
+<?php
+
+function so_kiosque_permission() {
+
+    return array(
+        'configure so_kiosque' => array(
+            'title' => t("Configure module"),
+            'description' => t("Edit module's settings."),
+        ),
+        'administer so_kiosque' => array(
+            'title' => t("Administer kiosque"),
+            'description' => t("Create and configure slideshows."),
+        ),
+        'display so_kiosque' => array(
+            'title' => t("Display kiosque"),
+            'description' => t("Launch and display slideshows."),
+        ),
+    );
+}
+
+function so_kiosque_menu() {
+
+    $items = array();
+
+    // ----- SETTINGS
+
+    $items['admin/config/so_kiosque'] = array(
+        'title' => "Kiosque",
+        'type' => MENU_NORMAL_ITEM,
+        'access arguments' => array('configure so_kiosque'),
+        'page callback' => 'system_admin_menu_block_page',
+        'file' => 'system.admin.inc',
+        'file path' => drupal_get_path('module', 'system'),
+        'position' => 'right',
+        'weight' => -30,
+    );
+
+    $items['admin/config/so_kiosque/settings'] = array(
+        'title' => "Configuration",
+        'description' => "General and modules settings",
+        'type' => MENU_NORMAL_ITEM,
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('so_kiosque_settings_form'),
+        'file' => 'so_kiosque.admin.inc',
+        'access arguments' => array('configure so_kiosque'),
+    );
+
+    $items['admin/config/so_kiosque/settings/general'] = array(
+        'title' => "Configuration",
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+        'access arguments' => array('configure so_kiosque'),
+        'weight' => 0,
+    );
+
+    // ----- SEQUENCES
+
+    $items['admin/structure/kiosque'] = array(
+        'title' => "Kiosque",
+        'description' => "Create and configure Kiosque slideshows.",
+        'type' => MENU_NORMAL_ITEM,
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('so_kiosque_sequences_form'),
+        'file' => 'so_kiosque.admin.inc',
+        'access arguments' => array('administer so_kiosque'),
+    );
+
+    $items['admin/structure/kiosque/sequences'] = array(
+        'title' => "Sequences",
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+        'access arguments' => array('administer so_kiosque'),
+        'weight' => 0,
+    );
+
+    $items['admin/structure/kiosque/launch'] = array(
+        'title' => "Access to kiosque launcher",
+        'type' => MENU_LOCAL_ACTION,
+        'page callback' => 'drupal_goto',
+        'page arguments' => array('kiosque'),
+        'access arguments' => array('display so_kiosque'),
+    );
+
+    $items['admin/structure/kiosque/sequence_params/%'] = array( // /id_sequence
+        'title' => "Edit sequence",
+        'type' => MENU_CALLBACK,
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('so_kiosque_sequence_params_form', 4),
+        'file' => 'so_kiosque.admin.inc',
+        'access arguments' => array('administer so_kiosque'),
+    );
+
+    $items['admin/structure/kiosque/sequence_delete/%'] = array( // /id_sequence
+        'title' => "Delete sequence",
+        'type' => MENU_CALLBACK,
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('so_kiosque_sequence_delete_form', 4),
+        'file' => 'so_kiosque.admin.inc',
+        'access arguments' => array('administer so_kiosque'),
+    );
+
+    // SEQUENCE ACTORS
+
+    $items['admin/structure/kiosque/sequence_actors/%'] = array( // /id_sequence
+        'title' => "Edit actors",
+        'type' => MENU_CALLBACK,
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('so_kiosque_sequence_actors_form', 4),
+        'file' => 'so_kiosque.admin.inc',
+        'access arguments' => array('administer so_kiosque'),
+    );
+
+    $items['admin/structure/kiosque/sequence_actor_delete/%'] = array( // /id_sequence/id_actor
+        'title' => "Delete actor",
+        'type' => MENU_CALLBACK,
+        'page callback' => 'so_kiosque_sequence_actor_delete',
+        'page arguments' => array(4, 5),
+        'file' => 'so_kiosque.admin.inc',
+        'access arguments' => array('administer so_kiosque'),
+    );
+
+    // ----- CASTING
+
+    $items['admin/structure/kiosque/actors'] = array(
+        'title' => "Casting",
+        'description' => "Create and configure Kiosque actors.",
+        'type' => MENU_LOCAL_TASK,
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('so_kiosque_actors_form'),
+        'file' => 'so_kiosque.admin.inc',
+        'access arguments' => array('administer so_kiosque'),
+        'weight' => 1,
+    );
+
+    $items['admin/structure/kiosque/actor_params/%'] = array( // /id_actor
+        'title' => "Edit actor",
+        'type' => MENU_CALLBACK,
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('so_kiosque_actor_params_form', 4),
+        'file' => 'so_kiosque.admin.inc',
+        'access arguments' => array('administer so_kiosque'),
+    );
+
+    $items['admin/structure/kiosque/actor_delete/%'] = array( // /id_actor
+        'title' => "Delete actor",
+        'type' => MENU_CALLBACK,
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('so_kiosque_actor_delete_form', 4),
+        'file' => 'so_kiosque.admin.inc',
+        'access arguments' => array('administer so_kiosque'),
+    );
+
+    // ----- KIOSQUE
+
+    $items['kiosque'] = array(
+        'title' => "Kiosque launcher",
+        'type' => MENU_CALLBACK,
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('so_kiosque_launcher_form'),
+        'access arguments' => array('display so_kiosque'),
+        'theme callback' => 'variable_get',
+        'theme arguments' => array('admin_theme', '0'),
+    );
+
+    $items['kiosque/development/%/%'] = array( // /id_sequence/id_actor
+        'title' => "Kiosque development",
+        'type' => MENU_CALLBACK,
+        'page callback' => 'so_kiosque_display_actor_content',
+        'page arguments' => array(2, 3),
+        'access arguments' => array('administer so_kiosque'),
+        'theme callback' => 'so_kiosque_get_theme',
+    );
+
+    $items['kiosque/run'] = array(
+        'title' => "Kiosque",
+        'type' => MENU_CALLBACK,
+        'page callback' => 'so_kiosque_run',
+        'access arguments' => array('display so_kiosque'),
+        'theme callback' => 'so_kiosque_get_theme',
+    );
+
+    $items['kiosque/ajax/run'] = array(
+        'title' => "Kiosque",
+        'type' => MENU_CALLBACK,
+        'page callback' => 'so_kiosque_run',
+        'page arguments' => array(true), // $ajax : on demande un retour JSON
+        'access arguments' => array('display so_kiosque'),
+        'theme callback' => 'so_kiosque_get_theme',
+    );
+
+    $items['kiosque/stop'] = array(
+        'title' => "Kiosque",
+        'type' => MENU_CALLBACK,
+        'page callback' => 'so_kiosque_stop',
+        'access arguments' => array('display so_kiosque'),
+        'theme callback' => 'so_kiosque_get_theme',
+    );
+
+    return $items;
+}
+
+function so_kiosque_theme() {
+
+    $theme = array(
+        'kiosque_sequences' => array(
+            'render element' => 'element',
+            'file' => 'so_kiosque.admin.inc',
+        ),
+        'kiosque_sequences_add' => array(
+            'render element' => 'element',
+            'file' => 'so_kiosque.admin.inc',
+        ),
+        'kiosque_actors' => array(
+            'render element' => 'element',
+            'file' => 'so_kiosque.admin.inc',
+        ),
+        'kiosque_actors_add' => array(
+            'render element' => 'element',
+            'file' => 'so_kiosque.admin.inc',
+        ),
+        'kiosque_sequence_actors' => array(
+            'render element' => 'element',
+            'file' => 'so_kiosque.admin.inc',
+        ),
+        'kiosque_sequence_actors_add' => array(
+            'render element' => 'element',
+            'file' => 'so_kiosque.admin.inc',
+        ),
+    );
+
+    return $theme;
+}
+
+/**
+ * Returns one sequence definition if $id is provided, or whole definitions instead.
+ *
+ * @param int $id
+ *
+ * @return stdClass or array of stdClass indexed by id
+ */
+function so_kiosque_get_sequence_definition($id = null) {
+
+    if (!empty($id)) {
+        $where = "id=?";
+        $args = array($id);
+    } else {
+        $where = "1";
+        $args = array();
+    }
+
+    $req = "SELECT * FROM {kiosque_sequences} WHERE " . $where . " ORDER BY name ASC";
+    $result = db_query($req, $args);
+
+    $sequences = array();
+
+    while ($row = $result->fetchObject()) {
+        $row->params = unserialize($row->params);
+
+        $sequences[$row->id] = $row;
+    }
+
+    if (!empty($id)) {
+        $sequences = $sequences[$id];
+    }
+
+    return $sequences;
+}
+
+/**
+ * Returns one actor definition if $id is provided, or whole definitions instead.
+ *
+ * @param int $id
+ *
+ * @return stdClass or array of stdClass indexed by id
+ */
+function so_kiosque_get_actor_definition($id = null) {
+
+    if (!empty($id)) {
+        $where = "id=?";
+        $args = array($id);
+    } else {
+        $where = "1";
+        $args = array();
+    }
+
+    $req = "SELECT * FROM {kiosque_actors} WHERE " . $where . " ORDER BY name ASC";
+    $result = db_query($req, $args);
+
+    $actors = array();
+
+    while ($row = $result->fetchObject()) {
+        $row->params = unserialize($row->params);
+
+        $actors[$row->id] = $row;
+    }
+
+    if (!empty($id)) {
+        $actors = $actors[$id];
+    }
+
+    return $actors;
+}
+
+/**
+ * Returns an ordered list of definitions of actors of a given sequence.
+ *
+ * @param int $id_sequence
+ * @param string $filter : '' = no filter / 'active' = only active actors
+ * @param string $order_by_field : either 'name' or 'weight'
+ *
+ * @return array of objects definitions.
+ */
+function so_kiosque_get_sequence_actors($id_sequence, $filter = "", $order_by_field = 'name') {
+
+    switch($filter) {
+        case 'active':
+            $where = " AND ksa.active=1";
+            break;
+
+        default:
+            $where = "";
+    }
+
+    switch($order_by_field) {
+
+        case 'weight':
+            $order_by = 'ksa.weight';
+            break;
+
+        case 'name':
+        default:
+            $order_by = 'ka.name';
+    }
+
+    $results = db_query(
+        "SELECT ka.*, ksa.id_sequence, ksa.active, ksa.weight, ksa.params AS sequence_actor_params  FROM {kiosque_actors} AS ka
+        RIGHT JOIN {kiosque_sequences_actors} AS ksa ON ksa.id_actor=ka.id
+        WHERE id_sequence=? " . $where .
+        " ORDER BY " . $order_by . " ASC",
+        array($id_sequence)
+    );
+
+    $actors = array();
+
+    while($row = $results->fetchObject()) {
+        $row->params = unserialize($row->params);
+        $row->sequence_actor_params = unserialize($row->sequence_actor_params);
+
+        $actors[$row->id] = $row;
+    }
+
+    return $actors;
+}
+
+function so_kiosque_launcher_form($form, &$form_state) {
+
+    $sequences = so_kiosque_get_sequence_definition();
+
+    $sequence_options = array();
+
+    foreach($sequences as $sequence) {
+        $sequence_actors = so_kiosque_get_sequence_actors($sequence->id, 'active');
+
+        if(empty($sequence_actors)) {continue;}
+
+        $sequence_options[$sequence->id] = $sequence->name;
+    }
+
+    if(empty($sequence_options)) {
+        return array(
+            'warning' => array(
+                '#type' => 'container',
+                '#attributes' => array('class' => array('kiosque_launcher_warning')),
+                '#children' => t("There's nothing to launch for the moment."),
+            ),
+        );
+    }
+
+    $form = array(
+        'sequence' => array(
+            '#type' => 'select',
+            '#title' => t("Sequence to launch"),
+            '#options' => $sequence_options,
+        ),
+
+        'launch' => array(
+            '#type' => 'submit',
+            '#value' => t("Launch"),
+        ),
+    );
+
+    return $form;
+}
+
+function so_kiosque_launcher_form_submit($form, &$form_state) {
+
+    so_kiosque_init_sequence_display($form_state['values']['sequence']);
+    drupal_goto('kiosque/run');
+}
+
+/**
+ * Session initialization.
+ *
+ * @param int $id_sequence
+ */
+function so_kiosque_init_sequence_display($id_sequence) {
+
+    $_SESSION['kiosque'] = array(
+        'id_sequence' => $id_sequence,
+        'actors' => array(),
+    );
+
+    $settings = variable_get('so_kiosque_settings', array());
+
+    $actors = so_kiosque_get_sequence_actors($id_sequence, 'active', 'weight');
+
+    foreach($actors as $actor) {
+        $_SESSION['kiosque']['actors'][$actor->id] = array(
+            'params' => array(
+                'calls' => 1,       // le nombre de fois que l'acteur doit être appelé. Décrémenté automatiquement APRES chaque appel.
+                                    // les modules peuvent ajuster cette valeur (application : pagination)
+
+                'delay' => $settings['min_delay'],  // durée d'affichage de l'acteur. Les modules peuvent ajuster cette valeur, sans toutefois qu'elle puisse
+                                                    // être inférieure à la durée minimum, paramétrée dans la config du Kiosque.
+            ),
+            'storage' => array(),   // indexé par nom de module. Permet aux acteurs de stocker des données qui leur seront restituées lors
+                                    // d'un éventuel rappel.
+        );
+    }
+}
+
+/**
+ * Delivers or builds the page of the current actor.
+ *
+ * @param boolean $ajax : if set to 'true', HTML will be returned, instead of be delivered to the browser.
+ *
+ * @return string or null
+ */
+function so_kiosque_run($ajax = false) {
+
+    $there_is_content = &drupal_static(__FUNCTION__);
+
+    $id_actor = key($_SESSION['kiosque']['actors']);
+
+    try{
+        $content = so_kiosque_build_actor_content($_SESSION['kiosque']['id_sequence'], $id_actor);
+
+    } catch(Exception $e) {
+
+        $content = null;
+    }
+
+    if(!empty($content)) {
+        $there_is_content = true;
+
+        so_kiosque_init_page();
+    }
+
+    $_SESSION['kiosque']['actors'][$id_actor]['params']['calls']--;
+
+    if($_SESSION['kiosque']['actors'][$id_actor]['params']['calls'] <= 0) {
+        unset($_SESSION['kiosque']['actors'][$id_actor]);
+    }
+
+    if(empty($_SESSION['kiosque']['actors'])) {
+
+        // y a t-il eu au moins un acteur qui a fourni du contenu lors de la boucle précédente ?
+        if($there_is_content == true) {
+
+            so_kiosque_init_sequence_display($_SESSION['kiosque']['id_sequence']); // on boucle
+            $there_is_content = false;
+
+        // aucun acteur n'a fourni de contenu - on appelle le callback de landing
+        } else {
+            drupal_goto('kiosque/stop');
+        }
+    }
+
+    if(!empty($content)) {
+
+        if($ajax == true) {
+            drupal_json_output(drupal_render_page($content));
+        } else {
+            return $content;
+        }
+    } else {
+        return so_kiosque_run(); // on tente avec l'acteur suivant
+        //NOTE : cela limite théoriquement le nombre d'acteurs (vides !) à 100 par séquence (PHP nested callbacks fatal error)
+    }
+}
+
+function so_kiosque_init_page($no_slideshow = false) {
+
+    $settings = variable_get('so_kiosque_settings', array());
+
+    $GLOBALS['conf']['cache'] = FALSE;
+
+    drupal_add_js(drupal_get_path('module', 'so_kiosque') . '/js/so_kiosque.page.js', array('type' => 'file', 'scope' => 'header', 'group' => JS_DEFAULT, 'weight' => 0));
+
+    $js_options = "
+        var kiosqueOptions = {\n
+            mainDelay: " . max($_SESSION['kiosque']['actors'][key($_SESSION['kiosque']['actors'])]['params']['delay'], $settings['min_delay']) . "\n
+        };\n
+    ";
+
+    drupal_add_js($js_options, array('type' => 'inline', 'scope' => 'header', 'group' => JS_DEFAULT, 'weight' => 0));
+
+    $js_prefix = "(function ($) {\n$(document).ready(function(){\n";
+
+    $js_slideshow = "new window.KiosqueSlideshow(kiosqueOptions);\n";
+
+    if($settings['development'] == true || $no_slideshow == true) {
+        $js_slideshow = "// Inhibited in Kiosque development mode\n // " . $js_slideshow;
+    }
+
+    $js_suffix = "});\n})(jQuery);\n";
+
+    drupal_add_js($js_prefix . $js_slideshow . $js_suffix, array('type' => 'inline', 'scope' => 'footer', 'group' => JS_DEFAULT, 'weight' => 0));
+}
+
+/**
+ * A default callback to execute when Kiosque auto-stops.
+ */
+function so_kiosque_stop() {
+    // TODO : faire une vraie page :
+    // - soit un tpl propre au module
+    // - soit une page édito (lorsque ce sera implémenté), avec, par exemple les coordonnées de l'OT.
+
+    drupal_set_message(t("No actor has provided content. The Kiosque loops indefinitely."), 'warning');
+    drupal_goto('kiosque');
+}
+
+/**
+ * Displays one actor, in development context.
+ */
+function so_kiosque_display_actor_content($id_sequence, $id_actor) {
+
+    so_kiosque_init_sequence_display($id_sequence);
+    so_kiosque_init_page(true);
+
+    $content = so_kiosque_build_actor_content($id_sequence, $id_actor);
+
+    return $content;
+}
+
+/**
+ * Provide content to display in Kiosque.
+ *
+ * @param int $id_sequence
+ * @param int $id_actor
+ *
+ * @return array : render array to display as main content
+ */
+function so_kiosque_build_actor_content($id_sequence, $id_actor) {
+
+    $actor_definition = so_kiosque_get_actor_definition($id_actor);
+    $actor_type = explode(':', $actor_definition->type); // namespace(module):type
+
+    $title = drupal_get_title();
+
+    $modules = module_implements('kiosque_actor_content');
+
+    $content = array();
+
+    foreach($modules as $module) {
+        $additions = array();
+
+        $function = $module . '_kiosque_actor_content';
+
+        if(!array_key_exists($module, $_SESSION['kiosque']['actors'][$id_actor]['storage'])) {
+            $_SESSION['kiosque']['actors'][$id_actor]['storage'][$module] = array();
+        }
+
+        $function(
+            $additions,
+            $title,
+            $actor_type[1],
+            $actor_definition->params['modules'][$module],
+            $_SESSION['kiosque']['actors'][$id_actor]['params'],
+            $_SESSION['kiosque']['actors'][$id_actor]['storage'][$module]
+        ); // passages par &
+
+        if(!empty($additions)) {
+            $content = array_merge($content, $additions);
+        }
+    }
+
+    if(empty($content)) {return null;}
+
+    drupal_set_title($title);
+
+    return $content;
+}
+
+function so_kiosque_get_theme() {
+    $settings = variable_get('so_kiosque_settings', array());
+    return array_key_exists('theme', $settings) ? $settings['theme'] : variable_get('theme_default', 'garland');
+}
